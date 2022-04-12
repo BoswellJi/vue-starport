@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { images } from '~/composables/data'
 
-const mode = useStorage('starport-image-mode', true)
+const mode = useStorage('starport-image-mode', false)
 const toggle = useToggle(mode)
 </script>
 
@@ -43,12 +43,15 @@ const toggle = useToggle(mode)
       </RouterLink>
     </div>
     <!-- for cypress -->
-    <div op1>
+    <div>
       <RouterLink id="link-warning-no-size" to="/warning-no-size">
         Warning No Size
       </RouterLink>
       <RouterLink id="link-warning-port-conflict" to="/warning-port-conflict">
         Warning Port Conflict
+      </RouterLink>
+      <RouterLink id="link-warning-no-size" to="/test">
+        test
       </RouterLink>
     </div>
   </div>

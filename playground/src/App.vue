@@ -16,6 +16,8 @@ import { isDebug } from '~/composables'
         />
       </transition>
     </RouterView>
-    <StarportCarrier />
+    <StarportCarrier>
+     animations
+    </StarportCarrier>
   </main>
 </template>

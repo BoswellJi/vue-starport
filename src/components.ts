@@ -23,6 +23,7 @@ export const StarportCarrier = defineComponent({
     return () => {
       return [
         slots.default?.(),
+        // 将 [[key,val],...]
         Array.from(state.portMap.entries() as IterableIterator).map(([port, { component }]) => h(
           StarportCraft,
           { key: port, port, component },
@@ -59,7 +60,7 @@ export const Starport = defineComponent({
       if (slots.length !== 1)
         throw new Error(`[Vue Starport] <Starport> requires exactly one slot, but got ${slots.length}`)
 
-        // 获取插槽组件
+      // 获取插槽组件
       const slot = slots[0]
       let component = slot.type as any
 

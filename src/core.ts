@@ -6,6 +6,8 @@ import type { StarportCraftProps, StarportProps } from './types'
 
 /**
  * @internal
+ * 
+ * 飞行器
  */
 export const StarportCraft = defineComponent({
   name: 'StarportCraft',
@@ -96,10 +98,10 @@ export const StarportCraft = defineComponent({
   },
 }) as DefineComponent<StarportCraftProps>
 
-
 let pre: any = null
 /**
  * @internal
+ * 代理
  */
 export const StarportProxy = defineComponent({
   name: 'StarportProxy',
@@ -124,18 +126,15 @@ export const StarportProxy = defineComponent({
     const el = ref<HTMLElement>()
     const id = sp.value.generateId()
 
-    if(pre){
-      console.log(pre === sp);
-    }
-    console.log(sp);
-
-    pre = sp;
+    if (pre)
+      console.log(pre === sp)
+    pre = sp
 
     // first time appearing, directly landed
     if (!sp.value.isVisible)
       sp.value.land()
 
-    onMounted(async() => {
+    onMounted(async () => {
       if (sp.value.el) {
         if (process.env.NODE_ENV === 'development')
           console.error(`[Vue Starport] Multiple proxies of "${sp.value.componentName}" with port "${props.port}" detected. The later one will be ignored.`)
@@ -153,7 +152,7 @@ export const StarportProxy = defineComponent({
       }
     })
 
-    onBeforeUnmount(async() => {
+    onBeforeUnmount(async () => {
       sp.value.liftOff()
       sp.value.el = undefined
 
@@ -171,7 +170,7 @@ export const StarportProxy = defineComponent({
 
     watch(
       () => props,
-      async() => {
+      async () => {
         // wait a tick for teleport to lift off then update the props
         if (sp.value.props)
           await nextTick()
