@@ -84,6 +84,8 @@ export const StarportCraft = defineComponent({
   },
 }) as DefineComponent<StarportCraftProps>
 
+
+let pre: any = null
 /**
  * @internal
  */
@@ -109,6 +111,13 @@ export const StarportProxy = defineComponent({
     const sp = state.getInstance(props.port, props.component)
     const el = ref<HTMLElement>()
     const id = sp.generateId()
+
+    if(pre){
+      console.log(pre === sp);
+    }
+    console.log(sp);
+
+    pre = sp;
 
     // first time appearing, directly landed
     if (!sp.isVisible)

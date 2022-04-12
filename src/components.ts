@@ -14,6 +14,7 @@ import { StarportCraft, StarportProxy } from './core'
 export const StarportCarrier = defineComponent({
   name: 'StarportCarrier',
   setup(_, { slots }) {
+    // 注入参数
     const state = createInternalState(inject(InjectionOptions, {}))
     const app = getCurrentInstance()!.appContext.app
     app.provide(InjectionState, state)
@@ -60,6 +61,7 @@ export const Starport = defineComponent({
       if (slots.length !== 1)
         throw new Error(`[Vue Starport] <Starport> requires exactly one slot, but got ${slots.length}`)
 
+        // 获取插槽组件
       const slot = slots[0]
       let component = slot.type as any
 

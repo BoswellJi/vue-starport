@@ -62,7 +62,7 @@ function reset() {
       <p flex-1 text-left>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
       </p>
-      <Starport
+      <!-- <Starport
         :port="String(next)"
         :style="{ width: size + 'px', height: size + 'px' }"
       >
@@ -70,7 +70,7 @@ function reset() {
           class="rounded-1/2 shadow-xl"
           :index="next"
         />
-      </Starport>
+      </Starport> -->
       <div />
     </div>
   </div>
