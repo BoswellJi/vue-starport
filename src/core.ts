@@ -77,6 +77,7 @@ export const StarportCraft = defineComponent({
           'onTransitionend': sp.value.land,
         },
         h(
+          // 为了将当前代理组件（插槽中的组件）移动到指定的dom元素中
           Teleport,
           {
             to: teleport ? `#${id.value}` : 'body',
@@ -120,6 +121,9 @@ export const StarportProxy = defineComponent({
       console.log(pre === sp)
     pre = sp
 
+    console.log(sp, pre)
+
+
     // first time appearing, directly landed
     if (!sp.value.isVisible) {
       sp.value.land()
@@ -144,7 +148,7 @@ export const StarportProxy = defineComponent({
         }
       }
     })
-    onBeforeUnmount(async() => {
+    onBeforeUnmount(async () => {
       sp.value.rect.update()
       sp.value.liftOff()
       sp.value.el = undefined
@@ -159,7 +163,7 @@ export const StarportProxy = defineComponent({
         return
 
       // dispose
-      state.dispose(sp.value.port)
+      // state.dispose(sp.value.port)
     })
 
     watch(
@@ -185,6 +189,7 @@ export const StarportProxy = defineComponent({
       return h(
         'div',
         mergeProps(attrs, {
+          // 给teleport插槽中的元素定义dom容器
           id,
           'ref': el,
           'data-starport-proxy': sp.value.componentId,

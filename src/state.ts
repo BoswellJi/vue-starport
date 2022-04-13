@@ -14,6 +14,9 @@ export function createInternalState(options: StarportOptions) {
       portMap.set(port, context)
     }
     context.component = component
+
+    console.log(portMap);
+    
     return context
   }
 

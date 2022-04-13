@@ -42,10 +42,9 @@ function reset() {
       <Starport
         :port="String(index)"
         :style="{ width: size + 'px', height: size + 'px' }"
-        transition-all duration-800
       >
         <MyComponent
-          class="rounded-1/2 shadow-xl"
+          :style="{ width: size-20 + 'px', height: size-20 + 'px',borderRadius: `50%` }"
           :index="index"
         />
       </Starport>
