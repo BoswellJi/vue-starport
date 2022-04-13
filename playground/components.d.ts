@@ -9,6 +9,7 @@ declare module '@vue/runtime-core' {
     RouterView: typeof import('vue-router')['RouterView']
     Starport: typeof import('vue-starport')['Starport']
     StarportCarrier: typeof import('vue-starport')['StarportCarrier']
+    TestComponent: typeof import('./src/components/TestComponent.vue')['default']
     TheLogo: typeof import('./src/components/TheLogo.vue')['default']
     TheNav: typeof import('./src/components/TheNav.vue')['default']
   }

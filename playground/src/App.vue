@@ -17,7 +17,10 @@ import { isDebug } from '~/composables'
       </transition>
     </RouterView>
     <StarportCarrier>
-     animations
+      animations
     </StarportCarrier>
+    <TestComponent>
+      hhh
+    </TestComponent>
   </main>
 </template>
