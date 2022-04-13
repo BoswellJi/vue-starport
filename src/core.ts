@@ -1,12 +1,11 @@
 import type { DefineComponent, StyleValue } from 'vue'
 import { Teleport, computed, defineComponent, h, inject, mergeProps, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { InjectionState } from './constants'
-import { optionsProps } from './options'
-import type { StarportCraftProps, StarportProps } from './types'
+import { proxyProps } from './options'
+import type { StarportCraftProps, StarportProxyProps } from './types'
 
 /**
  * @internal
- * 
  * 飞行器
  */
 export const StarportCraft = defineComponent({
@@ -34,22 +33,16 @@ export const StarportCraft = defineComponent({
         top: 0,
         width: `${rect.width ?? 0}px`,
         height: `${rect.height ?? 0}px`,
-        transform: `translate3d(${rect.x ?? 0}px, ${rect.y ?? 0}px,0px)`,
+        transform: `translate3d(${rect.x ?? 0}px,${rect.y ?? 0}px,0px)`,
       }
       if (!sp.value.isVisible || !sp.value.el) {
         return {
           ...style,
-          opacity: 0,
           zIndex: -1,
-          pointerEvents: 'none',
-          transitionProperty: 'all',
-          // TODO: make this configurable
-          transitionDuration: `${sp.value.options.duration / 3}ms`,
-          transitionTimingFunction: sp.value.options.easing,
+          display: 'none',
         }
       }
       if (sp.value.isLanded) {
-        style.pointerEvents = 'none'
         style.display = 'none'
       }
       else {
@@ -106,10 +99,6 @@ let pre: any = null
 export const StarportProxy = defineComponent({
   name: 'StarportProxy',
   props: {
-    port: {
-      type: String,
-      required: true,
-    },
     props: {
       type: Object,
       default: () => ({}),
@@ -118,21 +107,24 @@ export const StarportProxy = defineComponent({
       type: Object,
       required: true,
     },
-    ...optionsProps,
+    ...proxyProps,
   },
   setup(props, ctx) {
     const state = inject(InjectionState)!
     const sp = computed(() => state.getInstance(props.port, props.component))
     const el = ref<HTMLElement>()
     const id = sp.value.generateId()
+    const isMounted = ref(false)
 
     if (pre)
       console.log(pre === sp)
     pre = sp
 
     // first time appearing, directly landed
-    if (!sp.value.isVisible)
+    if (!sp.value.isVisible) {
       sp.value.land()
+      isMounted.value = true
+    }
 
     onMounted(async () => {
       if (sp.value.el) {
@@ -142,6 +134,7 @@ export const StarportProxy = defineComponent({
       }
       sp.value.el = el.value
       await nextTick()
+      isMounted.value = true
       sp.value.rect.update()
       // warn if no width or height
       if (process.env.NODE_ENV === 'development') {
@@ -151,10 +144,11 @@ export const StarportProxy = defineComponent({
         }
       }
     })
-
-    onBeforeUnmount(async () => {
+    onBeforeUnmount(async() => {
+      sp.value.rect.update()
       sp.value.liftOff()
       sp.value.el = undefined
+      isMounted.value = false
 
       if (sp.value.options.keepAlive)
         return
@@ -181,23 +175,26 @@ export const StarportProxy = defineComponent({
       { deep: true, immediate: true },
     )
 
-    return () => h(
-      'div',
-      {
-        id,
-        'ref': el,
-        'style': {
-          transitionProperty: 'all',
-          transitionDuration: `${sp.value.options.duration}ms`,
-          transitionTimingFunction: sp.value.options.easing,
-        },
-        'data-starport-proxy': sp.value.componentId,
-        'data-starport-landed': sp.value.isLanded ? 'true' : undefined,
-        'data-starport-floating': !sp.value.isLanded ? 'true' : undefined,
-      },
-      ctx.slots.default
-        ? h(ctx.slots.default)
-        : undefined,
-    )
+    return () => {
+      const { initialProps, mountedProps, ..._attrs } = props
+      const attrs = mergeProps(
+        _attrs as any,
+        (isMounted.value ? mountedProps : initialProps) || {},
+      )
+
+      return h(
+        'div',
+        mergeProps(attrs, {
+          id,
+          'ref': el,
+          'data-starport-proxy': sp.value.componentId,
+          'data-starport-landed': sp.value.isLanded ? 'true' : undefined,
+          'data-starport-floating': !sp.value.isLanded ? 'true' : undefined,
+        }),
+        ctx.slots.default
+          ? h(ctx.slots.default)
+          : undefined,
+      )
+    }
   },
-}) as DefineComponent<StarportProps>
+}) as DefineComponent<StarportProxyProps>

@@ -1,9 +1,9 @@
 import { isObject } from '@vueuse/core'
 import type { DefineComponent } from 'vue'
-import { defineComponent, getCurrentInstance, h, inject, isVNode, markRaw } from 'vue'
+import { defineComponent, getCurrentInstance, h, inject, isVNode, markRaw, onMounted, ref } from 'vue'
 import { InjectionOptions, InjectionState } from './constants'
-import { optionsProps } from './options'
-import type { IterableIterator, StarportOptions } from './types'
+import { proxyProps } from './options'
+import type { StarportProps } from './types'
 import { createInternalState } from './state'
 import { StarportCraft, StarportProxy } from './core'
 
@@ -11,7 +11,6 @@ import { StarportCraft, StarportProxy } from './core'
  * The carrier component for all the flying Starport components
  * Should be intialized in App.vue only once.
  */
-
 export const StarportCarrier = defineComponent({
   name: 'StarportCarrier',
   setup(_, { slots }) {
@@ -24,10 +23,11 @@ export const StarportCarrier = defineComponent({
       return [
         slots.default?.(),
         // 将 [[key,val],...]
-        Array.from(state.portMap.entries() as IterableIterator).map(([port, { component }]) => h(
-          StarportCraft,
-          { key: port, port, component },
-        )),
+        Array.from(state.portMap.entries())
+          .map(([port, { component }]) => h(
+            StarportCraft,
+            { key: port, port, component },
+          )),
       ]
     }
   },
@@ -39,18 +39,17 @@ export const StarportCarrier = defineComponent({
 export const Starport = defineComponent({
   name: 'Starport',
   inheritAttrs: true,
-  props: {
-    port: {
-      type: String,
-      required: true,
-    },
-    ...optionsProps,
-  },
+  props: proxyProps,
   setup(props, ctx) {
     const state = inject(InjectionState)
 
     if (!state)
       throw new Error('[Vue Starport] Failed to find <StarportCarrier>, have you initalized it?')
+
+    const isMounted = ref(false)
+    onMounted(() => {
+      isMounted.value = true
+    })
 
     return () => {
       const slots = ctx.slots.default?.()
@@ -74,11 +73,10 @@ export const Starport = defineComponent({
 
       return h(StarportProxy, {
         ...props,
-        port: props.port,
+        key: props.port,
         component: markRaw(component),
         props: slot.props,
-        key: props.port,
       })
     }
   },
-}) as DefineComponent<{ port: string } & StarportOptions>
+}) as DefineComponent<StarportProps>

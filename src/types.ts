@@ -27,13 +27,16 @@ export interface StarportCraftProps {
   port: string
 }
 
-export interface StarportProps extends StarportOptions, StarportCraftProps {
+export interface StarportProxyProps extends StarportOptions, StarportCraftProps {
 }
 
-export interface IterableIterator {
-  next: () => {
-    value: [string, any]
-    done: boolean
-  }
-  [Symbol.iterator](): IterableIterator
+export interface StarportProps extends StarportProxyProps {
+  /**
+   * Props that apply to the proxy when it is mounted.
+   */
+  mountedProps?: Record<string, any>
+  /**
+   * Props that apply to the proxy before it is mounted.
+   */
+  initialProps?: Record<string, any>
 }
