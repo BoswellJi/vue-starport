@@ -74,5 +74,9 @@ function reset() {
       </Starport> -->
       <div />
     </div>
+
+    <Teleport to="#tele1">
+      <div>hhhh tele2</div>
+    </Teleport>
   </div>
 </template>

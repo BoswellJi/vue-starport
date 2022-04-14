@@ -7,6 +7,9 @@ import { isDebug } from '~/composables'
     font-sans text="center gray-700 dark:gray-200" relative
     :class="{ debug: isDebug }"
   >
+    <div id="tele1">
+      <!--  -->
+    </div>
     <TheNav />
     <RouterView v-slot="{ Component }">
       <transition name="page-fade">
@@ -24,3 +27,15 @@ import { isDebug } from '~/composables'
     </TestComponent>
   </main>
 </template>
+
+<style>
+#tele1 div{
+ transition: all 1s;
+ font-size: 33px;
+}
+
+#teleport1 div{
+ transition: all 1s;
+ font-size: 11px;
+}
+</style>

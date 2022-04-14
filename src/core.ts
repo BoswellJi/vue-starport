@@ -123,7 +123,6 @@ export const StarportProxy = defineComponent({
 
     console.log(sp, pre)
 
-
     // first time appearing, directly landed
     if (!sp.value.isVisible) {
       sp.value.land()
@@ -148,6 +147,7 @@ export const StarportProxy = defineComponent({
         }
       }
     })
+
     onBeforeUnmount(async () => {
       sp.value.rect.update()
       sp.value.liftOff()
@@ -163,7 +163,7 @@ export const StarportProxy = defineComponent({
         return
 
       // dispose
-      // state.dispose(sp.value.port)
+      state.dispose(sp.value.port)
     })
 
     watch(

@@ -3,6 +3,12 @@ import { images } from '~/composables/data'
 
 const mode = useStorage('starport-image-mode', false)
 const toggle = useToggle(mode)
+let disabled = $ref(true)
+
+function btnDisabled() {
+  disabled = !disabled
+}
+
 </script>
 
 <template>
@@ -12,7 +18,7 @@ const toggle = useToggle(mode)
       Shared component across routes with animations
     </p>
     <div p5 flex="~ gap-2" justify-center>
-      <button btn @click="toggle()">
+      <button btn @click="toggle();btnDisabled();">
         Toggle Size
       </button>
     </div>
@@ -61,6 +67,11 @@ const toggle = useToggle(mode)
       <RouterLink id="link-warning-no-size" to="/test">
         test
       </RouterLink>
+    </div>
+    <div id="teleport1">
+      <Teleport to="#tele1" :disabled="disabled">
+        <div>hhhh tele1</div>
+      </Teleport>
     </div>
   </div>
 </template>
