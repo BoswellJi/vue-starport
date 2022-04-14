@@ -29,13 +29,8 @@ import { isDebug } from '~/composables'
 </template>
 
 <style>
-#tele1 div{
+#tele1{
  transition: all 1s;
  font-size: 33px;
-}
-
-#teleport1 div{
- transition: all 1s;
- font-size: 11px;
 }
 </style>

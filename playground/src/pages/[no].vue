@@ -44,7 +44,7 @@ function reset() {
         :style="{ width: size + 'px', height: size + 'px' }"
       >
         <MyComponent
-          :style="{ width: size-20 + 'px', height: size-20 + 'px',borderRadius: `50%` }"
+          :style="{ width: size + 'px', height: size + 'px',borderRadius: `50%` }"
           :index="index"
         />
       </Starport>

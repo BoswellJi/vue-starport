@@ -22,7 +22,9 @@ export const StarportCraft = defineComponent({
   },
   setup(props) {
     const state = inject(InjectionState)!
-    const sp = computed(() => state.getInstance(props.port, props.component))
+    const sp = computed(() => {
+      return state.getInstance(props.port, props.component)
+    })
     const id = computed(() => sp.value.el?.id || sp.value.id)
 
     const style = computed((): StyleValue => {
@@ -94,7 +96,6 @@ export const StarportCraft = defineComponent({
   },
 }) as DefineComponent<StarportCraftProps>
 
-let pre: any = null
 /**
  * @internal
  * 代理
@@ -118,12 +119,6 @@ export const StarportProxy = defineComponent({
     const el = ref<HTMLElement>()
     const id = sp.value.generateId()
     const isMounted = ref(false)
-
-    if (pre)
-      console.log(pre === sp)
-    pre = sp
-
-    console.log(sp, pre)
 
     // first time appearing, directly landed
     if (!sp.value.isVisible) {
@@ -165,6 +160,7 @@ export const StarportProxy = defineComponent({
         return
 
       // dispose
+      // 销毁飞行器中Teleport的插槽内容（星港）
       state.dispose(sp.value.port)
     })
 

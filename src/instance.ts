@@ -6,6 +6,7 @@ import type { ResolvedStarportOptions, StarportOptions } from './types'
 import { getComponentName, kebabCase, nanoid } from './utils'
 
 /**
+ * 相同编号的星港的上下文
  * @internal
  */
 export function createStarportInstance(
