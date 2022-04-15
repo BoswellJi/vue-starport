@@ -19,7 +19,9 @@ export function createStarportInstance(
 
   const el: Ref<HTMLElement | undefined> = ref()
   const props: Ref<any> = ref(null)
+  // 是否落地
   const isLanded: Ref<boolean> = ref(false)
+  // 是否可见
   const isVisible = ref(false)
   const scope = effectScope(true)
   const localOptions = ref<StarportOptions>({})
@@ -34,7 +36,7 @@ export function createStarportInstance(
 
   scope.run(() => {
     rect = useElementBounding(el)
-    watch(el, async(v) => {
+    watch(el, async (v) => {
       if (v)
         isVisible.value = true
       await nextTick()
@@ -71,6 +73,7 @@ export function createStarportInstance(
     elRef() {
       return el
     },
+    // 起飞
     liftOff() {
       if (!isLanded.value)
         return
@@ -79,6 +82,7 @@ export function createStarportInstance(
       rect.listen()
       // console.log('lift off', port)
     },
+    // 登陆
     land() {
       if (isLanded.value)
         return

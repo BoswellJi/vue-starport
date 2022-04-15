@@ -23,6 +23,7 @@ export const StarportCraft = defineComponent({
   setup(props) {
     const state = inject(InjectionState)!
     const sp = computed(() => {
+      // 根据星港标识，新增或者获取插槽组件，从portMap中,新增时会将新增组件返回，飞行器组件中只会获取插槽组件，将他飞行到目的地
       return state.getInstance(props.port, props.component)
     })
     const id = computed(() => sp.value.el?.id || sp.value.id)
@@ -115,7 +116,10 @@ export const StarportProxy = defineComponent({
   },
   setup(props, ctx) {
     const state = inject(InjectionState)!
-    const sp = computed(() => state.getInstance(props.port, props.component))
+    const sp = computed(() => {
+      // 根据星港标识，新增或者获取插槽组件，从portMap中,新增时会将新增组件返回
+      return state.getInstance(props.port, props.component)
+    })
     const el = ref<HTMLElement>()
     const id = sp.value.generateId()
     const isMounted = ref(false)

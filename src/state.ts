@@ -5,11 +5,13 @@ import type { StarportInstance } from './instance'
 import { createStarportInstance } from './instance'
 
 export function createInternalState(options: StarportOptions) {
+  // portMap是响应式对象，对他的操作会进行响应式处理
   const portMap = reactive(new Map<string, StarportInstance>())
 
   function getInstance(port: string, component: Component) {
     let context = portMap.get(port)
     if (!context) {
+      // 返回的也是响应式对象
       context = createStarportInstance(port, component, options)
       portMap.set(port, context)
     }
