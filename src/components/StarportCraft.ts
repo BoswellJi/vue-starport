@@ -34,8 +34,10 @@ export const StarportCraft = defineComponent({
         top: 0,
         width: `${rect.width}px`,
         height: `${rect.height}px`,
-        transform: `translate3d(${rect.left}px,${rect.top}px,0px)`,
+        transform: `translate3d(${rect.left}px,${rect.top}px,0px) scale3d(.5,.5,.5)`,
+        background: 'red',
       }
+      // 星港不可见 || 星港不存在 ，直接将飞行器隐藏
       if (!sp.value.isVisible || !sp.value.el) {
         return {
           ...style,
@@ -43,10 +45,12 @@ export const StarportCraft = defineComponent({
           display: 'none',
         }
       }
+      // 星港已经落地，直接将飞行器隐藏
       if (sp.value.isLanded) {
         style.display = 'none'
       }
       else {
+        // 星港在飞行中，过渡
         Object.assign(style, {
           transitionProperty: 'all',
           transitionDuration: `${duration}ms`,

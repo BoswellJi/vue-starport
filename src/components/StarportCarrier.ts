@@ -7,6 +7,7 @@ import { StarportCraft } from './StarportCraft'
 /**
  * The carrier component for all the flying Starport components
  * Should be initialized in App.vue only once.
+ * 组件会根据StarPort组件的创建，改变state.portMap响应式数据，进行更新，创建飞行器
  */
 export const StarportCarrier = defineComponent({
   name: 'StarportCarrier',
