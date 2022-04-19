@@ -5,9 +5,6 @@ import { InjectionState } from '../constants'
 import { proxyProps } from '../options'
 import type { StarportProps } from '../types'
 import { StarportProxy } from './StarportProxy'
- * 所有飞行的星港组件的运载组件应该在App.vue中只触发一次
-    // 注入参数
-        // 将 [[key,val],...]，生成所有飞行器组件;初始化时没有portMap，所以不会执行StarportCraft逻辑
 
 /**
  * The proxy component wrapper for the Starport.
