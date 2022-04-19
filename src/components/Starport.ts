@@ -1,42 +1,16 @@
 import { isObject } from '@vueuse/core'
 import type { DefineComponent } from 'vue'
-import { defineComponent, getCurrentInstance, h, inject, isVNode, markRaw, onMounted, ref } from 'vue'
-import { InjectionOptions, InjectionState } from './constants'
-import { proxyProps } from './options'
-import type { StarportProps } from './types'
-import { createInternalState } from './state'
-import { StarportCraft, StarportProxy } from './core'
-
-/**
+import { defineComponent, h, inject, isVNode, markRaw, onMounted, ref } from 'vue'
+import { InjectionState } from '../constants'
+import { proxyProps } from '../options'
+import type { StarportProps } from '../types'
+import { StarportProxy } from './StarportProxy'
  * 所有飞行的星港组件的运载组件应该在App.vue中只触发一次
- * The carrier component for all the flying Starport components
- * Should be intialized in App.vue only once.
- */
-export const StarportCarrier = defineComponent({
-  name: 'StarportCarrier',
-  setup(_, { slots }) {
     // 注入参数
-    const state = createInternalState(inject(InjectionOptions, {}))
-    const app = getCurrentInstance()!.appContext.app
-    app.provide(InjectionState, state)
-
-    return () => {
-      return [
-        slots.default?.(),
         // 将 [[key,val],...]，生成所有飞行器组件;初始化时没有portMap，所以不会执行StarportCraft逻辑
-        Array.from(state.portMap.entries())
-          .map(([port, { component }]) => h(
-            StarportCraft,
-            { key: port, port, component },
-          )),
-      ]
-    }
-  },
-}) as DefineComponent<{}>
 
 /**
- * 星港的代理组件包装器
- * The proxy component warpper for the Starport.
+ * The proxy component wrapper for the Starport.
  */
 export const Starport = defineComponent({
   name: 'Starport',
@@ -46,7 +20,7 @@ export const Starport = defineComponent({
     const state = inject(InjectionState)
 
     if (!state)
-      throw new Error('[Vue Starport] Failed to find <StarportCarrier>, have you initalized it?')
+      throw new Error('[Vue Starport] Failed to find <StarportCarrier>, have you initialized it?')
 
     const isMounted = ref(false)
     onMounted(() => {

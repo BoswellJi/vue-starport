@@ -8,44 +8,23 @@ export function useElementBounding(
 ) {
   const rect = reactive({
     height: 0,
-    bottom: 0,
     width: 0,
     left: 0,
-    right: 0,
     top: 0,
-    x: 0,
-    y: 0,
     update,
     listen,
     pause,
   })
 
   let scope: EffectScope | undefined
+  const root = document.documentElement || document.body
 
   function update() {
     const el = unrefElement(target)
     if (!el)
       return
-    const {
-      height,
-      width,
-      bottom,
-      left,
-      right,
-      top,
-      x,
-      y,
-    } = el.getBoundingClientRect()
-    Object.assign(rect, {
-      height,
-      width,
-      bottom,
-      left,
-      right,
-      top,
-      x,
-      y,
-    })
+    const { height, width, left, top } = el.getBoundingClientRect()
+    Object.assign(rect, { height, width, left, top: root.scrollTop + top })
   }
   const raf = useRafFn(update, { immediate: false })
 
