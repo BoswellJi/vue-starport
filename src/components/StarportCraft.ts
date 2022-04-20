@@ -9,25 +9,30 @@ import type { StarportCraftProps } from '../types'
 export const StarportCraft = defineComponent({
   name: 'StarportCraft',
   props: {
-    port: {
+    port: { // 星港标识
       type: String,
       required: true,
     },
-    component: {
+    component: { // 星港插槽组件实例
       type: Object,
       required: true,
     },
   },
   setup(props) {
     const state = inject(InjectionState)!
+    // 获取星港组件的上下文实例
     const sp = computed(() => state.getInstance(props.port, props.component))
+    // 获取港组件的id
     const id = computed(() => sp.value.el?.id || sp.value.id)
-
+    // 获取飞行器的样式
     const style = computed((): StyleValue => {
+      // 起飞了多少毫秒
       const elapsed = Date.now() - sp.value.liftOffTime
+      // 计算过渡时间
       const duration = Math.max(0, sp.value.options.duration - elapsed)
+      // 动画信息及操作
       const rect = sp.value.rect
-
+      // 基础样式
       const style: StyleValue = {
         position: 'absolute',
         left: 0,
@@ -63,6 +68,7 @@ export const StarportCraft = defineComponent({
     const additionalProps = process.env.NODE_ENV === 'production'
       ? {}
       : {
+        // 过渡结束事件
         onTransitionend(e: TransitionEvent) {
           if (sp.value.isLanded)
             return
@@ -71,6 +77,7 @@ export const StarportCraft = defineComponent({
       }
 
     return () => {
+      // 星港组件落地 && dom元素
       const teleport = !!(sp.value.isLanded && sp.value.el)
       return h(
         'div',
@@ -84,9 +91,11 @@ export const StarportCraft = defineComponent({
         h(
           Teleport,
           {
+            // 飞行器落地,将运载的组件通过Teleport放到指定位置
             to: teleport ? `#${id.value}` : 'body',
             disabled: !teleport,
           },
+          // 星港插槽组件实例, 飞行过程中为空
           h(sp.value.component as any,
             mergeProps(additionalProps, sp.value.props),
           ),

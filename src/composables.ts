@@ -4,7 +4,7 @@ import type { EffectScope } from 'vue'
 import { reactive } from 'vue'
 
 export function useElementBounding(
-  target: MaybeElementRef,
+  target: MaybeElementRef, // 星港代理组件的dom对象
 ) {
   const rect = reactive({
     height: 0,
@@ -24,6 +24,7 @@ export function useElementBounding(
     if (!el)
       return
     const { height, width, left, top } = el.getBoundingClientRect()
+    // 更新响应式数据
     Object.assign(rect, { height, width, left, top: root.scrollTop + top })
   }
   const raf = useRafFn(update, { immediate: false })
@@ -31,7 +32,8 @@ export function useElementBounding(
   function listen() {
     if (scope)
       return
-    update()
+    // 开始执行动画，通过requestAnimationFrame函数来执行
+    update() // 这里是为了马上就开始执行
     raf.resume()
   }
   function pause() {
