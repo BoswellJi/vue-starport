@@ -100,7 +100,7 @@ export const StarportProxy = defineComponent({
       const { initialProps, mountedProps, ..._attrs } = props
       const attrs = mergeProps(
         _attrs as any,
-        // 判断是已经安装还是初始化时期
+        // 判断是否已经安装还是已安装之前时期
         (isMounted.value ? mountedProps : initialProps) || {},
       )
 
