@@ -24,7 +24,7 @@ export const StarportCraft = defineComponent({
     const sp = computed(() => state.getInstance(props.port, props.component))
     // 获取港组件的id
     const id = computed(() => sp.value.el?.id || sp.value.id)
-    // 获取飞行器的样式
+    // 获取飞行器的样式，根据Starportproxy组件的位置尺寸信息来计算
     const style = computed((): StyleValue => {
       // 起飞了多少毫秒
       const elapsed = Date.now() - sp.value.liftOffTime
@@ -39,10 +39,10 @@ export const StarportCraft = defineComponent({
         top: 0,
         width: `${rect.width}px`,
         height: `${rect.height}px`,
-        transform: `translate3d(${rect.left}px,${rect.top}px,0px) scale3d(.5,.5,.5)`,
-        background: 'red',
+        transform: `translate3d(${rect.left}px,${rect.top}px,0px)`,
       }
       // 星港不可见 || 星港不存在 ，直接将飞行器隐藏
+      // isVisible，el同时被赋值的
       if (!sp.value.isVisible || !sp.value.el) {
         return {
           ...style,

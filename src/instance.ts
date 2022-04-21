@@ -16,13 +16,15 @@ export function createStarportInstance(
 ) {
   const componentName = getComponentName(component)
   const componentId = kebabCase(componentName) || nanoid()
-
+  // 星港代理组件的根节点dom
   const el: Ref<HTMLElement | undefined> = ref()
+  // 插槽组件的props
   const props: Ref<any> = ref(null)
   // 是否落地
   const isLanded: Ref<boolean> = ref(false)
   // 是否可见
   const isVisible = ref(false)
+  // 副作用作用域
   const scope = effectScope(true)
   const localOptions = ref<StarportOptions>({})
   const options = computed<ResolvedStarportOptions>(() => ({
@@ -36,6 +38,7 @@ export function createStarportInstance(
 
   scope.run(() => {
     rect = useElementBounding(el)
+    // 当el被赋值后，展示这个飞行器
     watch(el, async (v) => {
       if (v)
         isVisible.value = true

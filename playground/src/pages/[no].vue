@@ -16,10 +16,15 @@ function enlarge() {
 function reset() {
   size = 200
 }
+
+function preventFn() {
+  return false
+}
 </script>
 
 <template>
   <div px6 py-2 flex="~ col" items-center>
+    <a @click="preventFn" href="/0">刷新</a>
     <div p2 flex="~ gap-2">
       <RouterLink btn to="/" saturate-0 class="back-btn">
         Back
@@ -42,13 +47,13 @@ function reset() {
       <Starport
         :port="String(index)"
         :style="{ width: size + 'px', height: size + 'px' }"
+        test="test"
       >
         <MyComponent
           :style="{ width: size + 'px', height: size + 'px',borderRadius: `50%` }"
           :index="index"
         />
       </Starport>
-
       <p flex-1 text-left>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
       </p>

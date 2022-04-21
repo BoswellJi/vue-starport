@@ -15,12 +15,14 @@ export function createInternalState(options: StarportOptions) {
    * @returns
    */
   function getInstance(port: string, component: Component) {
+    // 获取星港标识对应的星港上下文对象
     let context = portMap.get(port)
     if (!context) {
       // 返回的也是响应式对象，根据星港标识，插槽组件实例，全局配置选型创建，星港实例
       context = createStarportInstance(port, component, options)
       portMap.set(port, context)
     }
+    // 将星港插槽组件赋值给星港上下文
     context.component = component
 
     return context
